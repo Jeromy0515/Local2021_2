@@ -44,7 +44,4 @@ public class CouponFrame extends BaseFrame{
 		previousFrame();
 	}
 	
-	public static void main(String[] args) {
-		new CouponFrame(true).setVisible(true);
-	}
 }

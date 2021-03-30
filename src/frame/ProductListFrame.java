@@ -209,8 +209,5 @@ public class ProductListFrame extends BaseFrame{
 		previousFrame();
 	}
 	
-	public static void main(String[] args) {
-		new ProductListFrame().setVisible(true);
-	}
 
 }

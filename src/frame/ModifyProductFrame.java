@@ -211,7 +211,4 @@ public class ModifyProductFrame extends BaseFrame{
 		previousFrame();
 	}
 	
-	public static void main(String[] args) {
-		new ModifyProductFrame("이베리코 갈비살").setVisible(true);
-	}
 }

@@ -85,7 +85,4 @@ public class SelectMonthFrame extends BaseFrame{
 		openFrame(new PurchaseListFrame(monthList));
 	}
 
-	public static void main(String[] args) {
-		new SelectMonthFrame().setVisible(true);
-	}
 }

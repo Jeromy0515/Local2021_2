@@ -109,7 +109,4 @@ public class ProductManagementFrame extends BaseFrame{
 		previousFrame();
 	}
 	
-	public static void main(String[] args) {
-		new ProductManagementFrame().setVisible(true);
-	}
 }

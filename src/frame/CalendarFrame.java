@@ -198,7 +198,4 @@ public class CalendarFrame extends BaseFrame{
 		
 	}
 	
-	public static void main(String[] args) {
-		new CalendarFrame().setVisible(true);
-	}
 }

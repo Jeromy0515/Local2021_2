@@ -160,8 +160,4 @@ public class SignUpFrame extends BaseFrame{
 		previousFrame();
 	}
 	
-	public static void main(String[] args) {
-		new SignUpFrame().setVisible(true);
-	}
-
 }
