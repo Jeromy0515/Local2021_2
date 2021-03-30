@@ -182,7 +182,7 @@ public class PurchaseFrame extends BaseFrame{
 			e.printStackTrace();
 		}
 		
-		if(confirmMeseage("총 각격이 "+String.format("%,d",getPrice(vol))+"원 입니다.\n결제하시겠습니까?", "결제") == JOptionPane.YES_OPTION) {
+		if(confirmMeseage("총 가격이 "+String.format("%,d",getPrice(vol))+"원 입니다.\n결제하시겠습니까?", "결제") == JOptionPane.YES_OPTION) {
 			informMessage("결제가 완료되었습니다.");
 			try (PreparedStatement pst = conn.prepareStatement("insert into purchase values(0,?,?,?,?,?,?)")){
 				pst.setObject(1, mi.productNo);

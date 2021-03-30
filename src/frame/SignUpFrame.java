@@ -94,7 +94,7 @@ public class SignUpFrame extends BaseFrame{
 		
 		try (PreparedStatement pst = conn.prepareStatement("select * from user where u_id = ?")){
 			pst.setObject(1, id);
-			if(pst.executeQuery().next()) {
+			if(pst.executeQuery().next() && tfs[1].getText().equals("admin")) {
 				errorMessage("이미 존재하는 아이디입니다.");
 				tfs[1].setText("");
 				tfs[1].requestFocus();

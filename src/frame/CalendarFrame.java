@@ -37,7 +37,9 @@ public class CalendarFrame extends BaseFrame{
 			dateLabelPanel.add(label);
 		}
 		
-		try (PreparedStatement pst = conn.prepareStatement("select day(a_date) as day from attendance where u_no = ? and year(a_date) = ? and month(a_date) = ?")){
+		try (PreparedStatement pst = conn.prepareStatement(
+				"select day(a_date) as day from attendance "
+				+ "where u_no = ? and year(a_date) = ? and month(a_date) = ?")){
 			pst.setObject(1, uNo);
 			pst.setObject(2, now.getYear());
 			pst.setObject(3, now.getMonthValue());
@@ -70,7 +72,7 @@ public class CalendarFrame extends BaseFrame{
 		}
 		
 		JPanel southPanel = createComponent(new JPanel(null),1,70);
-		southPanel.add(createComponent(createButtonWithoutMargin("쿠폰 받기", null),230,30,90,30));
+		southPanel.add(createComponent(createButtonWithoutMargin("쿠폰 받기", e->getCoupon()),230,30,90,30));
 		
 		centerPanel.add(dateLabelPanel,BorderLayout.NORTH);
 		centerPanel.add(datePanel,BorderLayout.CENTER);
@@ -93,20 +95,21 @@ public class CalendarFrame extends BaseFrame{
 		public void paintComponent(Graphics g) {
 			if(!click) {
 				for (int i = 0; i < dateList.size(); i++) {
-					if(day == now.getDayOfMonth()) {
-						g.setColor(Color.red);
-						g.drawOval(5,5,35,35);
-						break;
-					}else if(dateList.get(i) == day){
+					if(dateList.get(i) == day) {
 						g.setColor(Color.black);
 						g.drawOval(5,5,35,35);
+						if(dateList.get(i) == now.getDayOfMonth())
+							check = true;
+						break;
+					}else if(day == now.getDayOfMonth() && check) {
+						g.setColor(Color.red);
+						g.drawOval(5,5,35,35);		
 						break;
 					}
 				}
 			}	
 			
 			if(click) {
-				System.out.println();
 				if(day != now.getDayOfMonth()) {
 					errorMessage("출석체크가 불가능한 날짜입니다.");
 					return;
@@ -115,7 +118,7 @@ public class CalendarFrame extends BaseFrame{
 					super.paintComponent(g); // super.paintComponent(g) 호출시 그렸던거 지워줌
 					g.setColor(Color.black);
 					g.drawOval(5,5,35,35);
-					try (PreparedStatement pst = conn.prepareStatement("insert into attendace values(0,?,?)")){
+					try (PreparedStatement pst = conn.prepareStatement("insert into attendance values(0,?,?)")){
 						pst.setObject(1, uNo);
 						pst.setObject(2, now.toString());
 						pst.execute();
@@ -153,7 +156,7 @@ public class CalendarFrame extends BaseFrame{
 	private void getCoupon() {
 		
 		try (PreparedStatement pst = conn.prepareStatement("select * from coupon where c_date = ? and u_no = ?")){
-			pst.setObject(1, now.getYear()+"-"+now.getMonthValue());
+			pst.setObject(1, now.getYear()+"-"+String.format("%02d",now.getMonthValue()));
 			pst.setObject(2, uNo);
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()) {

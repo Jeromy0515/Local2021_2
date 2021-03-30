@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import java.util.TreeSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -30,7 +32,14 @@ public class PurchaseListFrame extends BaseFrame{
 			return false;
 		};
 	};
-	JTable table = new JTable(model);
+	JTable table = new JTable(model) {
+		@Override
+		public java.awt.Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int column) {
+			JComponent comp =(JComponent)super.prepareRenderer(renderer, row, column);
+			comp.setBackground(Color.white);
+			return comp;
+		};
+	};
 	JScrollPane scrollPane = new JScrollPane(table);
 	JLabel monthLabel;
 	JTextField tfTotal = new JTextField(10);

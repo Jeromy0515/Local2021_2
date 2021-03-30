@@ -81,6 +81,9 @@ public class ProductListFrame extends BaseFrame{
 								labelList.get(i).setForeground(Color.black);
 						}
 						label.setForeground(Color.red);
+						for (int i = 0; i < tfs.length; i++) {
+							tfs[i].setText("");
+						}
 					}
 				});
 				labelList.add(label);

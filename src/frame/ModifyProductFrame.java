@@ -28,6 +28,7 @@ public class ModifyProductFrame extends BaseFrame{
 	String modifiedImagePath = "";
 	int pNo;
 	boolean change = false;
+	String category = "",price = "" , stock = "", explanation = "";
 	
 	public ModifyProductFrame(String pName) {
 		super("상품수정", 320, 450);
@@ -78,6 +79,11 @@ public class ModifyProductFrame extends BaseFrame{
 		southPanel.add(createButton("수정", e->modify()));
 		southPanel.add(createButton("취소", e->previousFrame()));
 		
+		category = (String)cb.getSelectedItem();
+		price = tfs[1].getText();
+		stock = tfs[2].getText();
+		explanation = tfs[3].getText();
+		
 		add(northPanel,BorderLayout.NORTH);
 		add(centerPanel,BorderLayout.CENTER);
 		add(southPanel,BorderLayout.SOUTH);
@@ -114,10 +120,6 @@ public class ModifyProductFrame extends BaseFrame{
 	}
 	
 	private void modify() {
-		String category = (String)cb.getSelectedItem();
-		String price = tfs[1].getText();
-		String stock = tfs[2].getText();
-		String explanation = tfs[3].getText();
 		
 		if(category.isEmpty() || price.isEmpty() || stock.isEmpty() || explanation.isEmpty()) {
 			errorMessage("빈칸이 있습니다.");

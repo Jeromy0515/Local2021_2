@@ -62,6 +62,7 @@ public class LoginFrame extends BaseFrame{
 		}
 		
 		if(id.equals("admin") && pw.equals("1234")) {
+			informMessage("관리자로 로그인 되었습니다.");
 			openFrame(new ProductManagementFrame());
 			return;
 		}
