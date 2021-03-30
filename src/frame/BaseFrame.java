@@ -10,7 +10,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.time.LocalDateTime;
+import java.sql.PreparedStatement;
+import java.time.LocalDate;
 import java.util.Stack;
 
 import javax.swing.ImageIcon;
@@ -19,31 +20,41 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 
-abstract public class BaseFrame extends JFrame{
-	
-	static LocalDateTime now = LocalDateTime.now();
-	
-	static String uName;
+abstract public class BaseFrame extends JFrame {
+
+	static LocalDate now = LocalDate.now();
+
+	static int uNo = 14;
+	static String uName = "박성주";
+	static int user10percent;
+	static int user30percent;
+
+	static DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+	static {
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+	}
 	
 	static Connection conn = null;
 	static {
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/2021지방_1?serverTimezone=UTC","user","1234");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/2021지방_1?serverTimezone=UTC", "user", "1234");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	static Stack<JFrame> stack = new Stack<JFrame>();
-	
-	public BaseFrame(String title,int width,int height) {
+
+	public BaseFrame(String title, int width, int height) {
 		super(title);
-		setSize(width,height);
+		setSize(width, height);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		
+
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -51,78 +62,91 @@ abstract public class BaseFrame extends JFrame{
 			}
 		});
 	}
-	
-	
-	
+
 	public static JLabel createLabel(String text, Font font) {
 		JLabel label = new JLabel(text);
 		label.setFont(font);
 		return label;
 	}
-	
+
 	public static JLabel createLabel(String text) {
 		JLabel label = new JLabel(text);
-		label.setFont(new Font("굴림",Font.BOLD,12));
+		label.setFont(new Font("굴림", Font.BOLD, 12));
 		return label;
 	}
-	
-	public static JLabel createLabel(String text,Font font,int alig) {
+
+	public static JLabel createLabel(String text, Font font, int alig) {
 		JLabel label;
-		if(font != null) 
-			label = createLabel(text,font);
+		if (font != null)
+			label = createLabel(text, font);
 		else
 			label = createLabel(text);
 		label.setHorizontalAlignment(alig);
 		return label;
 	}
-	
-	
-	public static JButton createButton(String text,ActionListener act) {
+
+	public static JButton createButton(String text, ActionListener act) {
 		JButton button = new JButton(text);
 		button.addActionListener(act);
-		button.setMargin(new Insets(0,0,0,0));
 		return button;
 	}
 	
-	public static <T extends JComponent> T createComponent(T comp,int width,int height) {
-		comp.setPreferredSize(new Dimension(width,height));
+	public static JButton createButtonWithoutMargin(String text,ActionListener act) {
+		JButton button = createButton(text, act);
+		button.setMargin(new Insets(0,0,0,0));
+		return button;
+	}
+
+	public static <T extends JComponent> T createComponent(T comp, int width, int height) {
+		comp.setPreferredSize(new Dimension(width, height));
 		return comp;
 	}
-	
-	public static <T extends JComponent> T createComponent(T comp,int x,int y,int width,int height) {
-		comp.setBounds(x,y,width,height);
+
+	public static <T extends JComponent> T createComponent(T comp, int x, int y, int width, int height) {
+		comp.setBounds(x, y, width, height);
 		return comp;
 	}
-	
+
 	public static void informMessage(String caption) {
-		JOptionPane.showMessageDialog(null, caption,"정보",JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, caption, "정보", JOptionPane.INFORMATION_MESSAGE);
 	}
-	
+
 	public static void errorMessage(String caption) {
-		JOptionPane.showMessageDialog(null, caption,"경고",JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(null, caption, "경고", JOptionPane.ERROR_MESSAGE);
+	}
+
+	public static int confirmMeseage(String caption, String title) {
+		return JOptionPane.showConfirmDialog(null, caption, title, JOptionPane.YES_NO_OPTION);
+	}
+
+	public static ImageIcon getImage(String imageName, int width, int height) {
+		return new ImageIcon(Toolkit.getDefaultToolkit().getImage("./제2과제 datafile/이미지/" + imageName + ".jpg")
+				.getScaledInstance(width, height, Image.SCALE_SMOOTH));
 	}
 	
-	public static int confirmMeseage(String caption,String title) {
-		return JOptionPane.showConfirmDialog(null, caption,title,JOptionPane.YES_NO_OPTION);
+	public static void updateCoupon(String couponName,int i) {
+		try (PreparedStatement pst = conn.prepareStatement("update user set "+couponName+"= "+couponName+" + ? where u_no = ?")){
+			pst.setObject(1, i);
+			pst.setObject(2, uNo);
+			pst.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
-	
-	public static ImageIcon getImage(String imageName,int width,int height) {
-		return new ImageIcon(
-				Toolkit.getDefaultToolkit().getImage("./제2과제 datafile/이미지/"+imageName+".jpg").getScaledInstance(width,height,Image.SCALE_SMOOTH));
-	}
-	
+
 	public void previousFrame() {
 		dispose();
 		stack.pop();
 		stack.peek().setVisible(true);
 	}
-	
+
 	public void openFrame(JFrame frame) {
 		dispose();
 		stack.push(frame);
 		stack.peek().setVisible(true);
 	}
-	
+
 	abstract public void closeFrame();
-	
+
 }

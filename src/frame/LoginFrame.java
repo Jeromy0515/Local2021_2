@@ -29,7 +29,7 @@ public class LoginFrame extends BaseFrame{
 		
 		JPanel centerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,0));
 		centerPanel.add(gridPanel);
-		centerPanel.add(createComponent(createButton("로그인", e->login()),70,80));
+		centerPanel.add(createComponent(createButtonWithoutMargin("로그인", e->login()),70,80));
 		
 		addWindowListener(new WindowAdapter() {
 			
@@ -62,7 +62,7 @@ public class LoginFrame extends BaseFrame{
 		}
 		
 		if(id.equals("admin") && pw.equals("1234")) {
-			openFrame(null);
+			openFrame(new ProductManagementFrame());
 			return;
 		}
 		
@@ -71,6 +71,9 @@ public class LoginFrame extends BaseFrame{
 			pst.setObject(2, pw);
 			ResultSet rs = pst.executeQuery();
 			if(rs.next()) {
+				user10percent = rs.getInt("u_10percent");
+				user30percent = rs.getInt("u_30percent");
+				uNo = rs.getInt("u_no");
 				uName = rs.getString("u_Name");
 				informMessage(uName+"님 환영합니다.");
 				openFrame(new ProductListFrame());

@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 
 public class SignUpFrame extends BaseFrame{
 	JTextField tfs[] = new JTextField[6]; //이름, 아이디, 비밀번호, 비밀번호체크, 전화번호, 생년월일
-	JButton signUpBtn = createComponent(createButton("회원가입", e->signUp()), 220,300,80,30);
+	JButton signUpBtn = createComponent(createButtonWithoutMargin("회원가입", e->signUp()), 220,300,80,30);
 	boolean checkOverlap = false;
 	
 	public SignUpFrame() {
@@ -79,9 +79,9 @@ public class SignUpFrame extends BaseFrame{
 		signUpBtn.setEnabled(false);
 		
 		add(gridPanel);
-		add(createComponent(createButton("중복확인", e->overlap()), 285,50,80,30));
+		add(createComponent(createButtonWithoutMargin("중복확인", e->overlap()), 285,50,80,30));
 		add(signUpBtn);
-		add(createComponent(createButton("취소", e->previousFrame()), 310,300,60,30));
+		add(createComponent(createButtonWithoutMargin("취소", e->previousFrame()), 310,300,60,30));
 		
 	}
 	

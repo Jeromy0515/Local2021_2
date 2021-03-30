@@ -20,6 +20,8 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import model.MenuInform;
+
 public class ProductListFrame extends BaseFrame{
 	JTextField tfs[] = new JTextField[3]; //상품명 최저가격 죄대가격
 	DefaultTableModel model = new DefaultTableModel(null,new Object[] {"상품번호","상품 카테고리","상품 이름","상품 가격","상품 재고","상품 설명"});
@@ -103,7 +105,7 @@ public class ProductListFrame extends BaseFrame{
 		});
 		JScrollPane scrollPane = new JScrollPane(labelPanel);
 		JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		btnPanel.add(createComponent(createButton("구매목록", null),80,30));
+		btnPanel.add(createComponent(createButtonWithoutMargin("구매목록", e->openFrame(new SelectMonthFrame())),80,30));
 		bPanel.add(scrollPane,BorderLayout.CENTER);
 		bPanel.add(btnPanel,BorderLayout.SOUTH);
 		JPanel cPanel = createComponent(new JPanel(new BorderLayout()),240,40,730,500);
@@ -111,6 +113,7 @@ public class ProductListFrame extends BaseFrame{
 		cPanel.add(tableScroll,BorderLayout.SOUTH);
 		
 		add(createComponent(createLabel("회원:"+uName, new Font("굴림",1,20)), 5, 10,200,25));
+		add(createComponent(createButtonWithoutMargin("출석 이벤트", e->openFrame(new CalendarFrame())), 880,5,90,30));
 		add(aPanel);
 		add(bPanel);
 		add(cPanel);
